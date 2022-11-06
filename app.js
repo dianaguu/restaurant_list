@@ -9,6 +9,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const routes = require('./routes');
+const usePassport = require('./configs/passport');
 require('./configs/mongoose');
 
 // express object
@@ -35,6 +36,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
 // ===========================================================
+// Invoke User Authentication
+usePassport(app);
 // Invoke Primary Router
 app.use(routes);
 // start server
