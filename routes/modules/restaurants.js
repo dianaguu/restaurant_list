@@ -5,7 +5,7 @@ const router = express.Router();
 const Restaurant = require("../../models/restaurant")
 
 // ===========================================================
-// CRUD.
+// CRUD
 // Read: Create page
 router.get('/new', (req, res) => {
   return res.render('new');
@@ -13,18 +13,14 @@ router.get('/new', (req, res) => {
 
 // Create: create a restaurant
 router.post("/", (req, res) => {
-  // console.log('[DIANA restaurant.js] req.body:', req.body)
   Restaurant.create(req.body)
     .then(() => res.redirect("/"))
     .catch(err => console.log(err))
 })
 
-module.exports = router
-
 // ===========================================================
 // Read - Show page for specific restaurant
 router.get('/:id', (req, res) => {
-  // console.log('[DIANA restaurant.js] req.params:', req.params)
   const restaurantId = req.params.id
   return Restaurant.findById(restaurantId)
     .lean()
@@ -47,8 +43,18 @@ router.get('/:id/edit', (req, res) => {
 // Update
 router.put("/:id", (req, res) => {
   const restaurantId = req.params.id;
-  console.log('[DIANA restaurant.js] req.body:', req.body)
-  Restaurant.findByIdAndUpdate(restaurantId, req.body)
+  return Restaurant.findByIdAndUpdate(restaurantId, req.body)
     .then(() => res.redirect(`/restaurants/${restaurantId}`))
     .catch(err => console.log(err))
 })
+
+// ===========================================================
+// Delete
+router.delete("/:id", (req, res) => {
+  const restaurantId = req.params.id;
+  return Restaurant.findByIdAndDelete(restaurantId)
+    .then(() => res.redirect("/"))
+    .catch(err => console.log(err))
+})
+
+module.exports = router
