@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session')
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
@@ -18,6 +19,14 @@ const PORT = process.env.PORT;
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', 'hbs');
 app.use(express.static("public"))
+
+// ===========================================================
+// session: express-session
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}));
 
 // ===========================================================
 // Parse HTTP request body
