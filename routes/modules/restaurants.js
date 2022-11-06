@@ -33,3 +33,22 @@ router.get('/:id', (req, res) => {
       res.render("show", { restaurant })})
     .catch(err => console.log(err))
 })
+
+// ===========================================================
+// Read - Edit page
+router.get('/:id/edit', (req, res) => {
+  const restaurantId = req.params.id;
+  return Restaurant.findById(restaurantId)
+    .lean()
+    .then(restaurant => res.render('edit', { restaurant }))
+    .catch(error => console.log(error));
+})
+
+// Update
+router.put("/:id", (req, res) => {
+  const restaurantId = req.params.id;
+  console.log('[DIANA restaurant.js] req.body:', req.body)
+  Restaurant.findByIdAndUpdate(restaurantId, req.body)
+    .then(() => res.redirect(`/restaurants/${restaurantId}`))
+    .catch(err => console.log(err))
+})
