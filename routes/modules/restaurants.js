@@ -13,7 +13,8 @@ router.get('/new', (req, res) => {
 
 // Create: create a restaurant
 router.post("/", (req, res) => {
-  Restaurant.create(req.body)
+  const userId = req.user._id
+  return Restaurant.create({ ...req.body, userId})
     .then(() => res.redirect("/"))
     .catch(err => console.log(err))
 })
@@ -21,20 +22,20 @@ router.post("/", (req, res) => {
 // ===========================================================
 // Read - Show page for specific restaurant
 router.get('/:id', (req, res) => {
-  const restaurantId = req.params.id
-  return Restaurant.findById(restaurantId)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Restaurant.findOne({ _id, userId})
     .lean()
-    .then(restaurant => {
-      console.log('[DIANA restaurant.js] restaurant:', restaurant)
-      res.render("show", { restaurant })})
+    .then(restaurant => res.render("show", { restaurant }))
     .catch(err => console.log(err))
 })
 
 // ===========================================================
 // Read - Edit page
 router.get('/:id/edit', (req, res) => {
-  const restaurantId = req.params.id;
-  return Restaurant.findById(restaurantId)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Restaurant.findOne({ _id, userId })
     .lean()
     .then(restaurant => res.render('edit', { restaurant }))
     .catch(error => console.log(error));
@@ -42,17 +43,20 @@ router.get('/:id/edit', (req, res) => {
 
 // Update
 router.put("/:id", (req, res) => {
-  const restaurantId = req.params.id;
-  return Restaurant.findByIdAndUpdate(restaurantId, req.body)
-    .then(() => res.redirect(`/restaurants/${restaurantId}`))
+  const userId = req.user._id
+  const _id = req.params.id
+  const updatedRestaurant = req.body
+  return Restaurant.findOneAndUpdate({ userId }, updatedRestaurant, { new: true, useFindAndModify: false })
+    .then(() => res.redirect(`/restaurants/${_id}`))
     .catch(err => console.log(err))
 })
 
 // ===========================================================
 // Delete
 router.delete("/:id", (req, res) => {
-  const restaurantId = req.params.id;
-  return Restaurant.findByIdAndDelete(restaurantId)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Restaurant.findOneAndDelete({ _id, userId })
     .then(() => res.redirect("/"))
     .catch(err => console.log(err))
 })

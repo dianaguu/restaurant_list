@@ -8,7 +8,8 @@ const Restaurant = require("../../models/restaurant")
 // CRUD.
 // Read: view all restaurants
 router.get("/", (req, res) => {
-  Restaurant.find({})
+  const userId = req.user._id;
+  Restaurant.find({userId})
     .lean()
     .then(restaurants => res.render('index', { restaurants }))
     .catch(err => console.log(err))
@@ -16,7 +17,6 @@ router.get("/", (req, res) => {
 
 // Update: search restaurant by keywords (without sort)
 router.get("/search", (req, res) => {
-  // console.log('[DIANA home.js] req.query:', req.query)
   const keywords = req.query.keywords
   if (!keywords) {
     return res.redirect("/")
