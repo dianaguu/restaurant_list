@@ -20,6 +20,12 @@ app.set('view engine', 'hbs');
 app.use(express.static("public"))
 
 // ===========================================================
+// Parse HTTP request body
+app.use(bodyParser.urlencoded({ extended: true }));
+// Override HTTP methods using header
+app.use(methodOverride('_method'));
+
+// ===========================================================
 // Invoke Primary Router
 app.use(routes);
 // start server

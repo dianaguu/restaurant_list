@@ -2,7 +2,7 @@
 <div class="container search-bar">
   <div class="search-bar-outer">
     <div class="search-bar-inner">
-      <h4 class="mb-2">尋找餐廳：</h4>
+      <h4 class="mb-2">Search Restaurant：</h4>
       <form action="/search">
         <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2">
           <div class="input-group mb-2 mb-sm-0 mr-sm-2">
@@ -20,6 +20,9 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-10 col-12 mx-auto">
+      <div class="text-right mb-3">
+        <a href="/restaurants/new"><button class="btn btn-primary">Create Restaurant</button></a>
+      </div>
       <div class="row row-cols-1 row-cols-sm-3">
         {{#each restaurants}}
         <div class="col">
