@@ -17,6 +17,7 @@ const PORT = process.env.PORT;
 // views: express-handlebars
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', 'hbs');
+app.use(express.static("public"))
 
 // ===========================================================
 // Invoke Primary Router
