@@ -9,11 +9,11 @@ module.exports = app => {
   app.use(passport.session());
 
   // invoke local strategy
-  passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+  passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, (req, email, password, done) => {
     User.findOne({ email })
       .then(user => {
-        if (!user) { return done(null, false, { message: 'That email is not registered!' }) }
-        if (user.password !== password) { return done(null, false, { message: 'Email or Password incorrect.' }) }
+        if (!user) { return done(null, false, req.flash('warning_msg', 'That email is not registered!')) }
+        if (user.password !== password) { return done(null, false, req.flash('warning_msg', 'Email or Password incorrect.')) }
         return done(null, user)
       })
       .catch(err => done(err, false));
