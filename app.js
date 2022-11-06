@@ -38,6 +38,15 @@ app.use(methodOverride('_method'));
 // ===========================================================
 // Invoke User Authentication
 usePassport(app);
+// Pass Request's data to Response
+app.use((req, res, next) => {
+  // console.log('[DIANA app.js] req.user: ', req.user)
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
+
+// ===========================================================
 // Invoke Primary Router
 app.use(routes);
 // start server
