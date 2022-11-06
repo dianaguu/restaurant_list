@@ -2,8 +2,14 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.render('index')
+const Restaurant = require("../../models/restaurant")
+
+// Read: view all restaurants
+router.get("/", (req, res) => {
+  Restaurant.find({})
+    .lean()
+    .then(restaurants => res.render('index', { restaurants }))
+    .catch(err => console.log(err))
 })
 
 module.exports = router;
